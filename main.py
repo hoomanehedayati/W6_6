@@ -40,7 +40,7 @@ def rot13(text):
 
 def writeFile(filename,content):
 
-    filehandler=open(filename,"w")
+    filehandler=open(filename,"w",encoding="UTF-8")
 
     filehandler.write(content)
 
