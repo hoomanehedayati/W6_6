@@ -1,99 +1,53 @@
-
 LOWER_ALPHABETS = "abcdefghijklmnopqrstuvwxyz"
 UPPER_ALPHABETS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+def writeFile(Filename: str, Content: str):
+    file = open(Filename, 'w', encoding="UTF-8")
+    file.write(Content)
+    file.close()
 
+def askRows():
+    print("Collecting plain text rows for ciphering.")
+    Content: str = ""
+    while True:
+        Row = input("Insert row(empty stops): ")
+        if len(Row) == 0:
+            break
+        Content += Row + "\n"
+    return Content
 
-def shiftCharacter(character, alphabet):
+def shiftCharacter(Character: str, Alphabets: str, Shift: int = 13):
+    Index = Alphabets.find(Character)
+    return Alphabets[(Index + Shift) % len(Alphabets)]
 
-    if character in alphabet:
-
-        index=alphabet.index(character)
-
-        if index < 13:
-            newindex=index+13
+def rot13(Content: str):
+    Result: str = ""
+    for Character in Content:
+        if Character in LOWER_ALPHABETS:
+            Result += shiftCharacter(Character, LOWER_ALPHABETS)
+        elif Character in UPPER_ALPHABETS:
+            Result += shiftCharacter(Character, UPPER_ALPHABETS)
         else:
-            newindex=index-13
-
-        return alphabet[newindex]
-
-    else:
-        return character
-
-
-def rot13(text):
-
-    newtext=""
-
-    for i in text:
-
-        if i in LOWER_ALPHABETS:
-            newtext+=shiftCharacter(i,LOWER_ALPHABETS)
-
-        elif i in UPPER_ALPHABETS:
-            newtext+=shiftCharacter(i,UPPER_ALPHABETS)
-
-        else:
-            newtext+=i
-
-    return newtext
-
-
-def writeFile(filename,content):
-
-    filehandler=open(filename,"w",encoding="UTF-8")
-
-    filehandler.write(content)
-
-    filehandler.close()
-
+            Result += Character
+    return Result
 
 def main():
+    print("Program starting.")
+    print()
+    PlainText: str = askRows()
+    CipheredText: str = rot13(PlainText)
 
-    newword=""
+    print()
+    print("#### Ciphered text ####")
+    print(CipheredText)
+    print("#### Ciphered text ####")
 
-    print("Program starting.\n")
-
-    print("Collecting plain text rows for ciphering.")
-
-    word=input("Insert row(empty stops): ")
-
-    while word != "":
-
-        content=rot13(word)
-
-        newword+=content+"\n"
-
-        word=input("Insert row(empty stops): ")
-
-    print("\nChoose operation:")
-    print("1. Show ciphered text")
-    print("2. Save ciphered text")
-
-    choice=input("Select operation: ")
-
-    if choice == "1":
-
-        print("\n#### Ciphered text ####")
-        print(newword)
-
-    elif choice == "2":
-
-        print("\n#### Ciphered text ####")
-
-        filename=input("Insert filename to save: ")
-
-        if filename == "":
-            print("File name not defined.\nAborting save operation.")
-
-        else:
-            writeFile(filename,newword)
-            print("Ciphered text saved!")
-
+    Filename: str = input("Insert filename to save: ")
+    if len(Filename.strip()) == 0:
+        print("File name not defined.")
+        print("Aborting save operation.")
     else:
-        print("Invalid choice.")
-
+        writeFile(Filename, CipheredText)
+        print("Ciphered text saved!")
     print("Program ending.")
 
-
-if __name__=="__main__":
-    main()
+main()
