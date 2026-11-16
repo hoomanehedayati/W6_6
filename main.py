@@ -1,11 +1,16 @@
 LOWER_ALPHABETS = "abcdefghijklmnopqrstuvwxyz"
 UPPER_ALPHABETS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-def writeFile(Filename: str, Content: str):
+
+
+def writeFile(Filename: str, Content: str) -> None:
+    """Saves the text to a file with the given filename."""
     file = open(Filename, 'w', encoding="UTF-8")
     file.write(Content)
     file.close()
 
-def askRows():
+
+def askRows() -> str:
+    """Asks rows from the user until an empty row. Returns all rows joined with newlines."""
     print("Collecting plain text rows for ciphering.")
     Content: str = ""
     while True:
@@ -15,11 +20,15 @@ def askRows():
         Content += Row + "\n"
     return Content
 
-def shiftCharacter(Character: str, Alphabets: str, Shift: int = 13):
+
+def shiftCharacter(Character: str, Alphabets: str, Shift: int = 13) -> str:
+    """Shifts one character by Shift positions in the given alphabets."""
     Index = Alphabets.find(Character)
     return Alphabets[(Index + Shift) % len(Alphabets)]
 
-def rot13(Content: str):
+
+def rot13(Content: str) -> str:
+    """Applies ROT13 to letters, other characters remain the same."""
     Result: str = ""
     for Character in Content:
         if Character in LOWER_ALPHABETS:
@@ -30,7 +39,8 @@ def rot13(Content: str):
             Result += Character
     return Result
 
-def main():
+
+def main() -> None:
     print("Program starting.")
     print()
     PlainText: str = askRows()
@@ -50,4 +60,6 @@ def main():
         print("Ciphered text saved!")
     print("Program ending.")
 
-main()
+
+if __name__ == "__main__":
+    main()
