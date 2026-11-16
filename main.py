@@ -1,55 +1,55 @@
 
-def savefile(file,words):
+LOWER_ALPHABETS = "abcdefghijklmnopqrstuvwxyz"
+UPPER_ALPHABETS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-    filehandler=open(file,"w")
 
-    for i in range(len(words)):
+def shiftCharacter(character, alphabet):
 
-        filehandler.write(words[i]+"\n")
+    if character in alphabet:
+
+        index=alphabet.index(character)
+
+        if index < 13:
+            newindex=index+13
+        else:
+            newindex=index-13
+
+        return alphabet[newindex]
+
+    else:
+        return character
+
+
+def rot13(text):
+
+    newtext=""
+
+    for i in text:
+
+        if i in LOWER_ALPHABETS:
+            newtext+=shiftCharacter(i,LOWER_ALPHABETS)
+
+        elif i in UPPER_ALPHABETS:
+            newtext+=shiftCharacter(i,UPPER_ALPHABETS)
+
+        else:
+            newtext+=i
+
+    return newtext
+
+
+def writeFile(filename,content):
+
+    filehandler=open(filename,"w")
+
+    filehandler.write(content)
 
     filehandler.close()
 
 
-def turnword(word):
-
-    newword=""
-
-    alphabet = "abcdefghijklmnopqrstuvwxyz"
-    alphabet2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-    for i in word:
-
-        if i in alphabet:
-
-            index=alphabet.index(i)
-
-            if index < 13:
-                newindex=index+13
-            else:
-                newindex=index-13
-
-            newword+=alphabet[newindex]
-
-        elif i in alphabet2:
-
-            index=alphabet2.index(i)
-
-            if index < 13:
-                newindex=index+13
-            else:
-                newindex=index-13
-
-            newword+=alphabet2[newindex]
-
-        else:
-            newword+=i
-
-    return newword
-
-
 def main():
 
-    newwordlist=[]
+    newword=""
 
     print("Program starting.\n")
 
@@ -59,9 +59,9 @@ def main():
 
     while word != "":
 
-        content=turnword(word)
+        content=rot13(word)
 
-        newwordlist.append(content)
+        newword+=content+"\n"
 
         word=input("Insert row(empty stops): ")
 
@@ -74,20 +74,19 @@ def main():
     if choice == "1":
 
         print("\n#### Ciphered text ####")
-
-        for i in range(len(newwordlist)):
-            print(newwordlist[i])
+        print(newword)
 
     elif choice == "2":
 
         print("\n#### Ciphered text ####")
 
-        file=input("Insert filename to save: ")
+        filename=input("Insert filename to save: ")
 
-        if file == "":
+        if filename == "":
             print("File name not defined.\nAborting save operation.")
+
         else:
-            savefile(file,newwordlist)
+            writeFile(filename,newword)
             print("Ciphered text saved!")
 
     else:
